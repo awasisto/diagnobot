@@ -1,0 +1,12 @@
+language: python
+
+python:
+  - 3.6
+
+script: true
+
+deploy:
+  - provider: heroku
+    api_key:
+      secure: "Od7R0xsgLlTO5hNJijJyQLT3PV7D0enPPSvhZrQf10ML23qqEr7FPzrR1aWVfeyHyfsTogBz7Oou23nzwVKHv+KREw2mIR98y28sFzzVXHm2At2E82+cpXBObbOsHEGQx7G1uUibGhXx2VyNmZEH5X27nfa+Nas+8/Dm6ujUXDo+rLu8+UEOb3IyMFwrwafaAOBvkl42nyOpdknDO56kGZYvqiNWA+i0Nyr3jfUSfJtNCnm36oeKkpu+ulz6WdIG3WcXST8R5/yTPuNBKehEyJQhr1DHMN/8NiPQ+3LX3w9BexfXZLPFNs+yalP5LqUN8GTNabYD97zcW0YOSNnlH36s85G0Fl+2dhBX1wg41/5ezFpUL4IAk70S6wq4F5h8iTAiWkpQ5AZBoaQZH8uVGlOjeUlmXwDKQW0++olFncKfConjwzRrI2nOVFAgIcIxznrc4LMS7Z+r9jl19+7+ecW7ZKb5/lsFwRz5n1wxqWa3KMxfRTurqGkcFoWTSqk0Yat9UcCjqNTiTbHpo2RY4YZhZamycH+A+QRd8KOj7TDCakzupqNnHbdsFcYSxaQzfeQkJjs5d2wGY64bTk4v7vgVt5r0AL5ZuVc5EpEdpd1vadSpRGQuOMlbx0SSPHrHeBHcZPJk2oIhi9Ru9cKP+bgSwVdQSupGtlbhto9AXek="
+    app: diagnobot-ai
