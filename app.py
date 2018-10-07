@@ -12,9 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Flask
+from flask import Flask, jsonify
+
+from models import db, Symptom
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+db.init_app(app)
+
+
+@app.route('/api/v1/symptoms')
+def get_all_symptoms():
+    all_symptoms = []
+    for query_result_item in Symptom.query.all():
+        all_symptoms.append(query_result_item.to_dict())
+    return jsonify(all_symptoms)
+
+
+@app.route('/api/v1/symptoms/<symptom_id>')
+def get_symptom_by_id(symptom_id):
+    return jsonify(Symptom.query.get(symptom_id).to_dict())
 
 
 @app.route("/")
