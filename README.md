@@ -3,6 +3,14 @@ DiagnoBot
 
 An open source medical artificial intelligence experiment
 
+Run
+---
+
+Enter the following commands in the terminal:
+
+    $ pip install -r requirements.txt
+    $ python app.py
+
 License
 -------
 
