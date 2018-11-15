@@ -1,3 +1,5 @@
 *.iml
 .idea/*
 !.idea/copyright
+.vscode
+__pycache__
