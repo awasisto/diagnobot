@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis - DiagnoBot</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/site.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/jquery-1.10.2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/respond.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modernizr-2.6.2.js') }}"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">DiagnoBot</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Diagnosis</a></li>
+                <!--<li><a href="/apidoc">API Documentation</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container body-content">
+    <br>
+    <h2>Diagnosis</h2><br>
+    <form class="form-horizontal">
+
+        <!--symptom checkboxes or sth here-->
+
+        <button type="submit" class="btn btn-default">Diagnose</button>
+    </form><br>
+    <script>
+        $(document).ready(function() {
+
+            // fetch symptoms from the REST API
+
+            // add action to the diagnose button
+
+        });
+    </script>
+</div>
+<footer class="container">
+    <hr />
+    <p>Copyright &copy; 2018 Adityawarman Fanaro, Andika Wasisto</p>
+</footer>
+</body>
+</html>
