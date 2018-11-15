@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 from models import db, Symptom
 
@@ -36,7 +36,7 @@ def get_symptom_by_id(symptom_id):
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template('diagnosis.html')
 
 
 if __name__ == '__main__':
