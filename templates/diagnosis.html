@@ -34,12 +34,10 @@
     </div>
     <div class="container body-content">
         <br>
-        <h2>Diagnosis</h2><br>
-        <form class="form-horizontal" id="symptoms">
-
-            <!--symptom checkboxes or sth here-->
-
-            <button type="submit" class="btn btn-default">Diagnose</button>
+        <h2>Pilih gejala</h2><br>
+        <form class="form-horizontal" id="diagnosisForm">
+            <br>
+            <button type="submit" class="btn btn-default">Diagnosis</button>
         </form><br>
         <script>
             $(document).ready(function () {
@@ -68,10 +66,12 @@
                 });
 
                 items.forEach(function (item){
-                    $(item).prependTo("#symptoms");
+                    $(item).prependTo("#diagnosisForm");
                 });
-                // add action to the diagnose button
 
+                $("#diagnosisForm").submit(function () {
+                    alert("Not yet implemented.");
+                });
             });
         </script>
     </div>
