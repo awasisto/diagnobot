@@ -9,4 +9,6 @@ deploy:
   - provider: heroku
     api_key:
       secure: "C+KDV/bqQPWFl09hZ/ppWZyjQWjbIGdrbHlG3/sRIWvaak9FMfa+HVTEwvJL0TFCVKj3BDwiTf/auBiFQ9/hb8sKeYlBhxI7e/B4vdu6mYetFqhRxkNFzU2QoZNRqCZ7SHjtydxpcBRmnklSKx6f0wNJ/4dVXPZqoxj31G1hUKcjBL5ZN1ld98Uqz5rUEyM3dy3VUwfkwBDFJITZJ2mCeAhnbnrC0uZfIzYxpXDiF1QjqBQzQOi09gGnc/9x67kgMHfqKd0jjKjkKA51s9pZNXi5hG2zguZVXnh6GIqJbXVCn3rAjyb9TRXpUOt/k04u/7DwBY9pVAWMFRcwM+mxA+tYDdAyJBJGTUOSQn/Tgbp9m455uy/+9HmGJLDeC3q/e50SbrtxWfxZ/CVQYC93R/hjcVj8uWGzUUj+QsmWlp97Jh401GsGI5eCs9p6BcWNlMujTYccbOuSg4meARHDVLwlu1QFuShxYazwFjywB3M2HNjmcmIVShRcULoG6IKPD5nguKUowNdyDRtOfp6/jBGGeatIOHa3D70iHLcZLw1jViDaMeTyQMEfWUVf/PjvQtK6FWBe4pSb/o+3rb9rRoekfUJauJFSt8bzrt84TDe0wGpKbOWdW5F/txAP/CDbnWDyZJXP5fbYqjB7AW0H9xbmPDnf2JvkdmGJjLT0GFg="
-    app: diagnobot-ai
+    app:
+      master: diagnobot-ai
+      develop: diagnobot-ai-dev
