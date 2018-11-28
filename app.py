@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
+import engine
 from models import db, Symptom
 
 # from flask_jsglue import JSGlue
@@ -35,6 +36,12 @@ def get_all_symptoms():
 @app.route('/api/v1/symptoms/<symptom_id>')
 def get_symptom_by_id(symptom_id):
     return jsonify(Symptom.query.get(symptom_id).to_dict())
+
+
+@app.route('/api/v1/diagnosis', methods=['POST'])
+def diagnosis():
+    print(request.json)
+    return jsonify(engine.get_possible_conditions(request.json['symptoms']))
 
 
 @app.route("/")
