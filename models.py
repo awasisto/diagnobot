@@ -21,6 +21,7 @@ class Condition(db.Model):
     __tablename__ = 'conditions'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
+    probability = db.Column(db.Float, nullable=False)
     symptom_probabilities = db.relationship('SymptomProbability')
 
 
@@ -28,6 +29,7 @@ class Symptom(db.Model):
     __tablename__ = 'symptoms'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
+    probability = db.Column(db.Float, nullable=False)
 
     def to_dict(self):
         return {

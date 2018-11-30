@@ -12,16 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
+import engine
 from models import db, Symptom
-
-# from flask_jsglue import JSGlue
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db.init_app(app)
-# jsglue = JSGlue(app)
 
 
 @app.route('/api/v1/symptoms')
@@ -37,9 +35,19 @@ def get_symptom_by_id(symptom_id):
     return jsonify(Symptom.query.get(symptom_id).to_dict())
 
 
+@app.route('/api/v1/diagnosis', methods=['POST'])
+def diagnosis():
+    return jsonify(engine.get_possible_conditions(request.json['symptoms']))
+
+
 @app.route("/")
-def hello():
+def home():
     return render_template('diagnosis.html')
+
+
+@app.route("/apidoc")
+def apidoc():
+    return render_template('apidoc.html')
 
 
 if __name__ == '__main__':
