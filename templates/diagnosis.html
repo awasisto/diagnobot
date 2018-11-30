@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnosis - DiagnoBot</title>
     <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
@@ -14,74 +14,91 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">DiagnoBot</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Diagnosis</a></li>
-                    <li><a href="/apidoc">API Documentation</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/awasisto/diagnobot">Fork me on GitHub</a></li>
-                </ul>
-            </div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">DiagnoBot</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Diagnosis</a></li>
+                <li><a href="/apidoc">API Documentation</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/awasisto/diagnobot">Fork me on GitHub</a></li>
+            </ul>
         </div>
     </div>
-    <div class="container body-content">
+</div>
+<div class="container body-content">
+    <br>
+    <h2>Pilih gejala</h2><br>
+    <div class="form-horizontal" id="diagnosisForm">
         <br>
-        <h2>Pilih gejala</h2><br>
-        <form class="form-horizontal" id="diagnosisForm">
-            <br>
-            <button type="submit" class="btn btn-default">Diagnosis</button>
-        </form><br>
-        <script>
-            $(document).ready(function () {
-                // var origin = window.location.origin;
-                // fetch symptoms from the REST API
-                // $.getJSON("/api/v1/symptoms", null, function (data) {
-                //     var items = [];
-                //     $.each(data, function (tuple) {
-                //         items.push("<input type=\"checkbox\" name=\""+ tuple.name + "\" value=\"" + tuple.id + "\">" + tuple.name + "<br>");
-                //         // $.each(tuple, function(item) {
-                //         //     items.push(item);
-                //         // });
-                //     });
-                //     document.write(items);
-                //     // $("#symptoms")
-                // });
-                var httpreq = new XMLHttpRequest();
-                httpreq.open("GET", "/api/v1/symptoms", false);
-                httpreq.send(null);
-                var data = JSON.parse(httpreq.responseText);
-                
-                var items = [];
-                data.forEach(function (tuple) {
-                    items.push("<input type=\"checkbox\" name=\"" + tuple.name + "\" value=\"" + tuple.id +
-                        "\">" + tuple.name + "<br>");
+        <button class="btn btn-default" id="diagnosisButton">Diagnosis</button>
+    </div>
+    <br>
+    <div id="result"></div>
+    <script>
+        $(document).ready(function () {
+            var httpreq = new XMLHttpRequest();
+            httpreq.open("GET", "/api/v1/symptoms", false);
+            httpreq.send(null);
+            var data = JSON.parse(httpreq.responseText);
+
+            var items = [];
+            data.forEach(function (tuple) {
+                items.push("<input type=\"checkbox\" name=\"symptom\" value=\"" + tuple.id +
+                    "\">" + tuple.name + "<br>");
+            });
+
+            items.forEach(function (item) {
+                $(item).prependTo("#diagnosisForm");
+            });
+
+            $("#diagnosisButton").click(function () {
+                $("#result").empty();
+
+                var diagnosisRequest = {};
+                diagnosisRequest.symptoms = [];
+                $("input[name='symptom']:checked").each(function () {
+                    var symptom = {};
+                    symptom.id = parseInt($(this).val());
+                    symptom.name = $(this).html();
+                    diagnosisRequest.symptoms.push(symptom);
                 });
 
-                items.forEach(function (item){
-                    $(item).prependTo("#diagnosisForm");
-                });
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1/diagnosis",
+                    data: JSON.stringify(diagnosisRequest),
+                    contentType: "application/json",
+                    success: function(data){
+                        var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami:</h4><ul>';
 
-                $("#diagnosisForm").submit(function () {
-                    alert("Not yet implemented.");
+                        data.forEach(function (possibleCondition) {
+                            resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
+                                (possibleCondition.probability * 100).toFixed(2) + '%</li>'
+                        });
+
+                        resultHtml += '</ul>';
+
+                        $("#result").append(resultHtml);
+                    }
                 });
             });
-        </script>
-    </div>
-    <footer class="container">
-        <hr />
-        <p>Copyright &copy; 2018 Adityawarman Fanaro, Andika Wasisto</p>
-    </footer>
+        });
+    </script>
+</div>
+<footer class="container">
+    <hr/>
+    <p>Copyright &copy; 2018 Adityawarman Fanaro, Andika Wasisto</p>
+</footer>
 </body>
 
 </html>

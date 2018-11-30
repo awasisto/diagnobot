@@ -1,3 +1,4 @@
+requests
 Flask==1.0.2
 Flask-SQLAlchemy==2.3.2
 gunicorn==19.9.0
