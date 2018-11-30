@@ -4,16 +4,20 @@ from models import Condition, SymptomProbability, Symptom
 def get_possible_conditions(symptoms):
     possible_conditions = []
     for condition in Condition.query.all():
-        possible_conditions.append({'name': condition.name, 'probability': get_condition_probability_given_symptoms(condition, symptoms)})
+        possible_conditions.append({'name': condition.name, 'probability': get_condition_probability_given_symptoms(
+            condition, symptoms)})
     return possible_conditions
 
 
 def get_condition_probability_given_symptoms(condition, symptoms):
+    symptoms = symptoms.copy()
     condition_probability = condition.probability
     while len(symptoms) > 0:
         first_symptom = symptoms.pop()
         if is_condition_has_symptom(condition, first_symptom):
-            condition_probability = get_symptom_probability_given_condition(first_symptom, condition) * condition.probability / get_symptom_probability(first_symptom['id'])
+            condition_probability = get_symptom_probability_given_condition(
+                first_symptom, condition) * condition.probability / get_symptom_probability(first_symptom['id'])
+            break
     if len(symptoms) > 0:
         for symptom in symptoms:
             if is_condition_has_symptom(condition, symptom):
@@ -22,7 +26,9 @@ def get_condition_probability_given_symptoms(condition, symptoms):
 
 
 def bayesian_update(condition, symptom, previous_probability):
-    return previous_probability * get_symptom_probability_given_condition(symptom, condition) / (previous_probability * get_symptom_probability_given_condition(symptom, condition) + (1 - get_symptom_probability_given_condition(symptom, condition)) * get_symptom_probability(symptom['id']))
+    return previous_probability * get_symptom_probability_given_condition(symptom, condition) /\
+           (previous_probability * get_symptom_probability_given_condition(symptom, condition) +
+            (1 - get_symptom_probability_given_condition(symptom, condition)) * get_symptom_probability(symptom['id']))
 
 
 def get_symptom_probability(symptom_id):
