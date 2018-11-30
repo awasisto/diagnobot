@@ -38,11 +38,12 @@
 <div class="container body-content">
     <br>
     <h2>Pilih gejala</h2><br>
-    <form class="form-horizontal" id="diagnosisForm" method="POST">
+    <div class="form-horizontal" id="diagnosisForm">
         <br>
-        <button type="submit" class="btn btn-default">Diagnosis</button>
-    </form>
+        <button class="btn btn-default" id="diagnosisButton">Diagnosis</button>
+    </div>
     <br>
+    <div id="result"></div>
     <script>
         $(document).ready(function () {
             var httpreq = new XMLHttpRequest();
@@ -60,27 +61,39 @@
                 $(item).prependTo("#diagnosisForm");
             });
 
-            $("#diagnosisForm").submit(function () {
-                {#alert("Not yet implemented.");#}
-                {#var selected = $(".symptom:checked");#}
-                {#var symptoms_id = selected.val();#}
-                {#var symptoms_name = selected.name;#}
-                {#console.log(symptoms_id);#}
-                {#console.log(symptoms_name);#}
+            $("#diagnosisButton").click(function () {
+                $("#result").empty();
+
+                var diagnosisRequest = {};
+                diagnosisRequest.symptoms = [];
+                $("input[name='symptom']:checked").each(function () {
+                    var symptom = {};
+                    symptom.id = parseInt($(this).val());
+                    symptom.name = $(this).html();
+                    diagnosisRequest.symptoms.push(symptom);
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1/diagnosis",
+                    data: JSON.stringify(diagnosisRequest),
+                    contentType: "application/json",
+                    success: function(data){
+                        var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami:</h4><ul>';
+
+                        data.forEach(function (possibleCondition) {
+                            resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
+                                (possibleCondition.probability * 100).toFixed(2) + '%</li>'
+                        });
+
+                        resultHtml += '</ul>';
+
+                        $("#result").append(resultHtml);
+                    }
+                });
             });
         });
     </script>
-    <div id="result">
-        {% if results is defined %}
-            <h1>Result:</h1>
-            <h2>You have high chance to have {{ results[0].name }}</h2>
-            <p>With {{ results[0].probability }} probability</p>
-            <h3>Other probabilities:</h3>
-            {% for result in results[1:] %}
-                <p>{{ result.name }} = {{ result.probability }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
 </div>
 <footer class="container">
     <hr/>

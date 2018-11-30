@@ -13,9 +13,6 @@
 # limitations under the License.
 
 from flask import Flask, jsonify, render_template, request
-import requests
-import os
-import json
 
 import engine
 from models import db, Symptom
@@ -23,7 +20,6 @@ from models import db, Symptom
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db.init_app(app)
-os.environ['NO_PROXY'] = '127.0.0.1'
 
 
 @app.route('/api/v1/symptoms')
@@ -44,25 +40,9 @@ def diagnosis():
     return jsonify(engine.get_possible_conditions(request.json['symptoms']))
 
 
-@app.route("/", methods=['GET'])
+@app.route("/")
 def home():
     return render_template('diagnosis.html')
-
-
-@app.route("/", methods=['POST'])
-def result():
-    selected_symptoms = request.form.getlist("symptom")
-    symptoms = []
-    for symptoms_id in selected_symptoms:
-        symptoms.append(get_symptom_by_id(symptoms_id).json)
-    symptom_input = {"symptoms": symptoms}
-    condition = requests.post("http://127.0.0.1:5000/api/v1/diagnosis",
-                              data=json.dumps(symptom_input),
-                              headers={'Content-Type': 'application/json'})
-    print(condition.json())
-    results = sorted(condition.json(), key=lambda k: k['probability'], reverse=True)
-    print(results)
-    return render_template('diagnosis.html', results=results)
 
 
 @app.route("/apidoc")
