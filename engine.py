@@ -6,6 +6,7 @@ def get_possible_conditions(symptoms):
     for condition in Condition.query.all():
         possible_conditions.append({'name': condition.name, 'probability': get_condition_probability_given_symptoms(
             condition, symptoms)})
+    possible_conditions.sort(key=lambda possible_condition: possible_condition['probability'], reverse=True)
     return possible_conditions
 
 
