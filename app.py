@@ -41,7 +41,7 @@ def diagnosis():
 
 
 @app.route("/")
-def hello():
+def home():
     return render_template('diagnosis.html')
 
 
