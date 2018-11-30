@@ -17,12 +17,9 @@ from flask import Flask, jsonify, render_template, request
 import engine
 from models import db, Symptom
 
-# from flask_jsglue import JSGlue
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db.init_app(app)
-# jsglue = JSGlue(app)
 
 
 @app.route('/api/v1/symptoms')
@@ -40,7 +37,6 @@ def get_symptom_by_id(symptom_id):
 
 @app.route('/api/v1/diagnosis', methods=['POST'])
 def diagnosis():
-    print(request.json)
     return jsonify(engine.get_possible_conditions(request.json['symptoms']))
 
 
