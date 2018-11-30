@@ -45,5 +45,10 @@ def home():
     return render_template('diagnosis.html')
 
 
+@app.route("/apidoc")
+def apidoc():
+    return render_template('apidoc.html')
+
+
 if __name__ == '__main__':
     app.run()
