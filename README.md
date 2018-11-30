@@ -1,6 +1,8 @@
 DiagnoBot
 =========
 
+[![Build Status](https://travis-ci.com/awasisto/diagnobot.svg?branch=master)](https://travis-ci.com/awasisto/diagnobot)
+
 An open source medical artificial intelligence experiment
 
 Run
