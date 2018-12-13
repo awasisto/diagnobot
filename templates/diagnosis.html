@@ -83,12 +83,17 @@
                         data: JSON.stringify(diagnosisRequest),
                         contentType: "application/json",
                         success: function(data){
-                            var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami:</h4><ul>';
+                            var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami: ';
 
                             for (var i = 0; i < 3; i++) {
                                 var possibleCondition = data[i];
-                                resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
-                                    (possibleCondition.probability * 100).toFixed(2) + '%</li>'
+								if (i == 0){
+									resultHtml += possibleCondition.name + ' dengan probabilitas ' +
+										(possibleCondition.probability * 100).toFixed(2) + '%</h4><p>Kemungkinan penyakit lainnya:</p><ul>'
+								} else {
+									resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
+										(possibleCondition.probability * 100).toFixed(2) + '%</li>'
+								}
                             }
 
                             resultHtml += '</ul>';
