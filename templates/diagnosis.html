@@ -37,7 +37,8 @@
 </div>
 <div class="container body-content">
     <br>
-    <h2>Pilih gejala</h2><br>
+    <h2>Diagnosis</h2><br>
+    <h4>Silahkan pilih gejala yang anda alami</h4><br>
     <div class="form-horizontal" id="diagnosisForm">
         <br>
         <button class="btn btn-default" id="diagnosisButton">Diagnosis</button>
@@ -53,8 +54,8 @@
 
             var items = [];
             data.forEach(function (tuple) {
-                items.push("<input type=\"checkbox\" name=\"symptom\" value=\"" + tuple.id +
-                    "\">" + tuple.name + "<br>");
+                items.push("<div class='checkbox'><label><input type=\"checkbox\" name=\"symptom\" value=\"" +
+                    tuple.id + "\">" + tuple.name + "</label></div>");
             });
 
             items.forEach(function (item) {
@@ -62,8 +63,6 @@
             });
 
             $("#diagnosisButton").click(function () {
-                $("#result").empty();
-
                 var diagnosisRequest = {};
                 diagnosisRequest.symptoms = [];
                 $("input[name='symptom']:checked").each(function () {
@@ -73,24 +72,31 @@
                     diagnosisRequest.symptoms.push(symptom);
                 });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/api/v1/diagnosis",
-                    data: JSON.stringify(diagnosisRequest),
-                    contentType: "application/json",
-                    success: function(data){
-                        var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami:</h4><ul>';
+                if (diagnosisRequest.symptoms.length < 3) {
+                    alert("Silahkan pilih minimal tiga gejala");
+                } else {
+                    $("#result").empty();
 
-                        data.forEach(function (possibleCondition) {
-                            resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
-                                (possibleCondition.probability * 100).toFixed(2) + '%</li>'
-                        });
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/v1/diagnosis",
+                        data: JSON.stringify(diagnosisRequest),
+                        contentType: "application/json",
+                        success: function(data){
+                            var resultHtml = '<h4>Kemungkinan kondisi yang sedang anda alami:</h4><ul>';
 
-                        resultHtml += '</ul>';
+                            for (var i = 0; i < 3; i++) {
+                                var possibleCondition = data[i];
+                                resultHtml += '<li>' + possibleCondition.name + ' dengan probabilitas ' +
+                                    (possibleCondition.probability * 100).toFixed(2) + '%</li>'
+                            }
 
-                        $("#result").append(resultHtml);
-                    }
-                });
+                            resultHtml += '</ul>';
+
+                            $("#result").append(resultHtml);
+                        }
+                    });
+                }
             });
         });
     </script>
